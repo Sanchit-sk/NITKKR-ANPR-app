@@ -11,4 +11,10 @@ class PlateInfo {
       required this.activity,
       required this.location,
       required this.timeStamp});
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "Platetext: $plateText \nActivity: $activity\nLocation: $location\ntimestamp: $timeStamp\n";
+  }
 }

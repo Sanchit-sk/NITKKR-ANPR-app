@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nit_anpr_app/pages/home_page.dart';
+import './sample_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: HomePage(
+        plates: platesData,
+      ),
     );
   }
 }

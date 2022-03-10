@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:nit_anpr_app/models/plate_info.dart';
+import 'package:nit_anpr_app/widgets/location_card.dart';
 import 'package:nit_anpr_app/widgets/plate_card.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class MySearchBar extends StatelessWidget {
   Icon? suffixIcon;
@@ -46,6 +50,37 @@ class _HomePageState extends State<HomePage> {
       child: SafeArea(
         child: Column(
           children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: const Text(
+                "Hi There!",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  LocationCard(location: "Gate1", ins: 150, outs: 100),
+                  LocationCard(
+                    location: "Gate1",
+                    ins: 150,
+                    outs: 100,
+                    cardColor: Colors.yellow,
+                  ),
+                  LocationCard(
+                    location: "Gate1",
+                    ins: 150,
+                    outs: 100,
+                    cardColor: Colors.pink,
+                  ),
+                ],
+              ),
+            ),
             Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

@@ -1,33 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nit_anpr_app/models/plate_info.dart';
+import 'package:nit_anpr_app/sample_data.dart';
 import 'package:nit_anpr_app/widgets/location_card.dart';
+import 'package:nit_anpr_app/widgets/my_pie_chart.dart';
+import 'package:nit_anpr_app/widgets/my_search_bar.dart';
 import 'package:nit_anpr_app/widgets/plate_card.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-
-class MySearchBar extends StatelessWidget {
-  Icon? suffixIcon;
-  String hint;
-  Function(String val) onSearch;
-  MySearchBar(
-      {Key? key, this.hint = "", this.suffixIcon, required this.onSearch})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        hintText: hint,
-        suffixIcon: suffixIcon,
-      ),
-      onChanged: (value) => onSearch(value),
-    );
-  }
-}
 
 class HomePage extends StatefulWidget {
   List<PlateInfo> plates;
@@ -52,15 +34,15 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               padding: const EdgeInsets.all(8),
-              child: const Text(
-                "Hi There!",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: Text("NIT Campus",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.leagueScript(
+                      textStyle: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ))),
             ),
+            MyPieChart(chartData: pieChartData),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(

@@ -47,3 +47,8 @@ final List<PlateInfo> platesData = [
       location: "Gate1",
       timeStamp: "09/03.2022 01:07AM"),
 ];
+
+final Map<String, double> pieChartData = {
+  "Ins": 200,
+  "Outs": 150,
+};

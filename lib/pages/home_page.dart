@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:nit_anpr_app/models/location_info.dart';
 import 'package:nit_anpr_app/models/plate_info.dart';
 import 'package:nit_anpr_app/sample_data.dart';
 import 'package:nit_anpr_app/widgets/location_card.dart';
@@ -30,61 +31,63 @@ class _HomePageState extends State<HomePage> {
 
     return Material(
       child: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: Text("NIT Campus",
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.leagueScript(
-                      textStyle: const TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                  ))),
-            ),
-            MyPieChart(chartData: pieChartData),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  LocationCard(location: "Gate1", ins: 150, outs: 100),
-                  LocationCard(
-                    location: "Gate1",
-                    ins: 150,
-                    outs: 100,
-                    cardColor: Colors.yellow,
-                  ),
-                  LocationCard(
-                    location: "Gate1",
-                    ins: 150,
-                    outs: 100,
-                    cardColor: Colors.pink,
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: Text("NIT Campus",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.leagueScript(
+                        textStyle: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ))),
               ),
-            ),
-            Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: MySearchBar(
-                    hint: "Search for license plate",
-                    suffixIcon: const Icon(Icons.search),
-                    onSearch: (query) {
-                      widget.query = query;
-                      // print("Search query changed: ${widget.query}");
-                      setState(() {});
-                    })),
-            // PlateCard(plate: demoPlate),
-            // PlateCard(plate: demoPlate)
-            Expanded(
-              child: ListView.builder(
+              MyPieChart(chartData: pieChartData),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    LocationCard(
+                        locationInfo: LocationInfo(
+                            location: "Gate 1", ins: 200, outs: 220)),
+                    LocationCard(
+                      locationInfo:
+                          LocationInfo(location: "Gate 2", ins: 50, outs: 40),
+                      cardColor: Colors.yellow,
+                    ),
+                    LocationCard(
+                      locationInfo:
+                          LocationInfo(location: "Gate 3", ins: 100, outs: 40),
+                      cardColor: Colors.pink,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: MySearchBar(
+                      hint: "Search for license plate",
+                      suffixIcon: const Icon(Icons.search),
+                      onSearch: (query) {
+                        widget.query = query;
+                        // print("Search query changed: ${widget.query}");
+                        setState(() {});
+                      })),
+              // PlateCard(plate: demoPlate),
+              // PlateCard(plate: demoPlate)
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
                 itemBuilder: (context, pos) => PlateCard(
                   plate: filteredPlates[pos],
                 ),
                 itemCount: filteredPlates.length,
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

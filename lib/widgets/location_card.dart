@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nit_anpr_app/models/location_info.dart';
 
 class LocationCard extends StatelessWidget {
   Color cardColor;
-  String location;
-  int ins;
-  int outs;
+  LocationInfo locationInfo;
   LocationCard(
-      {Key? key,
-      this.cardColor = Colors.blue,
-      required this.location,
-      required this.ins,
-      required this.outs})
+      {Key? key, this.cardColor = Colors.blue, required this.locationInfo})
       : super(key: key);
 
   @override
@@ -30,7 +25,7 @@ class LocationCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                location,
+                locationInfo.location,
                 style: const TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -39,14 +34,14 @@ class LocationCard extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    "$ins Ins",
+                    "${locationInfo.ins} Ins",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    "$outs Outs",
+                    "${locationInfo.outs} Outs",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,

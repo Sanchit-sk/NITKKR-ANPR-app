@@ -31,19 +31,41 @@ class _HomePageState extends State<HomePage> {
 
     return Material(
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Text("NIT Campus",
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.leagueScript(
-                        textStyle: const TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                    ))),
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              title: const Text(
+                "NITKKR Campus",
+                // textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurpleAccent,
+                ),
               ),
+              expandedHeight: 200,
+              flexibleSpace: Image.asset("./assets/images/campus.png",
+                  fit: BoxFit.fitHeight, alignment: Alignment.center),
+            ),
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              flexibleSpace: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: MySearchBar(
+                      hint: "Search for license plate",
+                      suffixIcon: const Icon(Icons.search),
+                      onSearch: (query) {
+                        widget.query = query;
+                        // print("Search query changed: ${widget.query}");
+                        setState(() {});
+                      })),
+              pinned: true,
+            ),
+            SliverList(
+                delegate: SliverChildListDelegate(<Widget>[
               MyPieChart(chartData: pieChartData),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -65,17 +87,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: MySearchBar(
-                      hint: "Search for license plate",
-                      suffixIcon: const Icon(Icons.search),
-                      onSearch: (query) {
-                        widget.query = query;
-                        // print("Search query changed: ${widget.query}");
-                        setState(() {});
-                      })),
               // PlateCard(plate: demoPlate),
               // PlateCard(plate: demoPlate)
               ListView.builder(
@@ -86,8 +97,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 itemCount: filteredPlates.length,
               )
-            ],
-          ),
+            ]))
+          ],
         ),
       ),
     );

@@ -34,9 +34,9 @@ class _HomePageState extends State<HomePage> {
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverAppBar(
+            const SliverAppBar(
               backgroundColor: Colors.white,
-              title: const Text(
+              title: Text(
                 "NITKKR Campus",
                 // textAlign: TextAlign.center,
                 style: TextStyle(
@@ -45,6 +45,9 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.deepPurpleAccent,
                 ),
               ),
+            ),
+            SliverAppBar(
+              backgroundColor: Colors.white,
               expandedHeight: 200,
               flexibleSpace: Image.asset("./assets/images/campus.png",
                   fit: BoxFit.fitHeight, alignment: Alignment.center),

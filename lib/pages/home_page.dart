@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   String query = "";
+  bool searchbarFocus = false;
 
   HomePage({Key? key}) : super(key: key);
 
@@ -45,45 +46,66 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                SliverAppBar(
-                  backgroundColor: Colors.white,
-                  expandedHeight: 200,
-                  flexibleSpace: Image.asset("./assets/images/campus.png",
-                      fit: BoxFit.fitHeight, alignment: Alignment.center),
-                ),
+                // SliverAppBar(
+                //   backgroundColor: Colors.white,
+                //   expandedHeight: 200,
+                //   flexibleSpace: Image.asset("./assets/images/campus.png",
+                //       fit: BoxFit.fitHeight, alignment: Alignment.center),
+                // ),
                 SliverAppBar(
                   backgroundColor: Colors.white,
                   flexibleSpace: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
                       child: MySearchBar(
-                          hint: "Search for license plate",
-                          suffixIcon: const Icon(Icons.search),
-                          onSearch: (query) {
-                            widget.query = query;
-                            setState(() {});
-                          })),
+                        hint: "Search for license plate",
+                        suffixIcon: const Icon(Icons.search),
+                        onSearch: (query) {
+                          widget.query = query;
+                          setState(() {});
+                        },
+                        onFocus: () {
+                          print("Focus on");
+                          setState(() {
+                            widget.searchbarFocus = true;
+                          });
+                        },
+                        onFocusOut: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          setState(() {
+                            widget.searchbarFocus = false;
+                          });
+                        },
+                      )),
                   pinned: true,
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate(<Widget>[
-                  MyPieChart(chartData: {
-                    "Ins": data.totalIns.toDouble(),
-                    "Outs": data.totalOuts.toDouble()
-                  }),
-                  // SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: ListView.builder(
-                  //       itemBuilder: (context, pos) {
-                  //         List<LocationInfo> locationDataList =
-                  //             data.locationData.values.toList();
-                  //         return LocationCard(
-                  //             locationInfo: locationDataList[pos]);
-                  //       },
-                  //       itemCount: data.locationData.length),
-                  // ),
-                  // PlateCard(plate: demoPlate),
-                  // PlateCard(plate: demoPlate)
+                  Container(
+                    height: widget.searchbarFocus ? 0 : null,
+                    child: Column(children: [
+                      MyPieChart(chartData: {
+                        "Ins": data.totalIns.toDouble(),
+                        "Outs": data.totalOuts.toDouble()
+                      }),
+                      SizedBox(
+                        height: 150,
+                        child: ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, pos) {
+                              List<LocationInfo> locationDataList =
+                                  data.locationData.values.toList();
+                              // print(data.locationData.length);
+                              return LocationCard(
+                                  colorIndex: pos,
+                                  locationInfo: locationDataList[pos]);
+                            },
+                            itemCount: data.locationData.length),
+                      ),
+                    ]),
+                  ),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),

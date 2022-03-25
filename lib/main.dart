@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nit_anpr_app/pages/home_page.dart';
+import 'package:nit_anpr_app/providers/plates_data_provider.dart';
+import 'package:provider/provider.dart';
 import './sample_data.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => PlatesDataProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,9 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(
-        plates: platesData,
-      ),
+      home: HomePage(),
     );
   }
 }

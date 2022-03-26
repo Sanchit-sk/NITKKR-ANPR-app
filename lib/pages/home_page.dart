@@ -81,6 +81,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate(<Widget>[
+                  //The contents under this container will hide
+                  //When the user is typing something in the searchbar
                   Container(
                     height: widget.searchbarFocus ? 0 : null,
                     child: Column(children: [
@@ -106,14 +108,22 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ]),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemBuilder: (context, pos) => PlateCard(
-                      plate: data.getFilteredPlates(widget.query)[pos],
+                  if (data.getFilteredPlates(widget.query).isNotEmpty)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemBuilder: (context, pos) => PlateCard(
+                        plate: data.getFilteredPlates(widget.query)[pos],
+                      ),
+                      itemCount: data.getFilteredPlates(widget.query).length,
+                    )
+                  else
+                    const Center(
+                      child: Text(
+                        "Nothing to show",
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     ),
-                    itemCount: data.getFilteredPlates(widget.query).length,
-                  )
                 ]))
               ],
             ),

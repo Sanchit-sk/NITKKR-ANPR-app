@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:nit_anpr_app/data_repo.dart';
 import 'package:nit_anpr_app/pages/home_page.dart';
 import 'package:nit_anpr_app/providers/plates_data_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import './sample_data.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await DataRepository().testFirestore();
   runApp(ChangeNotifierProvider(
       create: (context) => PlatesDataProvider(), child: const MyApp()));
 }
@@ -15,6 +20,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //Testing firestore
+    //TODO: Remove later
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

@@ -9,7 +9,7 @@ import './sample_data.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await DataRepository().testFirestore();
+  // await DataRepository().testFirestore();
   runApp(ChangeNotifierProvider(
       create: (context) => PlatesDataProvider(), child: const MyApp()));
 }
@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Provider.of<PlatesDataProvider>(context, listen: false)
+        .fetchPlatesList(DateTime.now(), DateTime.now());
     //Testing firestore
     //TODO: Remove later
     return MaterialApp(

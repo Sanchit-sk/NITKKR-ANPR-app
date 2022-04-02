@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:nit_anpr_app/Constants.dart';
+import 'package:nit_anpr_app/data_repo.dart';
 import 'package:nit_anpr_app/models/location_info.dart';
 import 'package:nit_anpr_app/models/plate_info.dart';
 import 'package:nit_anpr_app/sample_data.dart';
@@ -46,6 +47,12 @@ class PlatesDataProvider extends ChangeNotifier {
   void setPlatesList(List<PlateInfo> newPlates) {
     _platesList = newPlates;
     notifyListeners();
+  }
+
+  Future<void> fetchPlatesList(DateTime? startDay, DateTime? endDay) async {
+    List<PlateInfo> plates =
+        await DataRepository().fetchPlates(startDay, endDay);
+    setPlatesList(plates);
   }
 
   List<PlateInfo> getFilteredPlates(String query) {

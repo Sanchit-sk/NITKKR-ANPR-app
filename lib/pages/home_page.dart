@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:nit_anpr_app/data_repo.dart';
 import 'package:nit_anpr_app/models/location_info.dart';
 import 'package:nit_anpr_app/models/plate_info.dart';
 import 'package:nit_anpr_app/providers/plates_data_provider.dart';
 import 'package:nit_anpr_app/sample_data.dart';
+import 'package:nit_anpr_app/widgets/date_picker.dart';
 import 'package:nit_anpr_app/widgets/location_card.dart';
 import 'package:nit_anpr_app/widgets/my_pie_chart.dart';
 import 'package:nit_anpr_app/widgets/my_search_bar.dart';
@@ -15,9 +17,6 @@ import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  String query = "";
-  bool searchbarFocus = false;
-
   HomePage({Key? key}) : super(key: key);
 
   @override
@@ -25,8 +24,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String query = "";
+  bool searchbarFocus = false;
+  DateTime? startDateTime;
+  DateTime? endDateTime;
+
   @override
   Widget build(BuildContext context) {
+    // DataRepository().fetchPlates(startDateTime, endDateTime);
+
     return Consumer<PlatesDataProvider>(
       builder: (context, data, child) {
         return Material(
@@ -61,19 +67,19 @@ class _HomePageState extends State<HomePage> {
                         hint: "Search for license plate",
                         suffixIcon: const Icon(Icons.search),
                         onSearch: (query) {
-                          widget.query = query;
+                          query = query;
                           setState(() {});
                         },
                         onFocus: () {
-                          print("Focus on");
+                          // print("Focus on");
                           setState(() {
-                            widget.searchbarFocus = true;
+                            searchbarFocus = true;
                           });
                         },
                         onFocusOut: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           setState(() {
-                            widget.searchbarFocus = false;
+                            searchbarFocus = false;
                           });
                         },
                       )),
@@ -84,8 +90,49 @@ class _HomePageState extends State<HomePage> {
                   //The contents under this container will hide
                   //When the user is typing something in the searchbar
                   Container(
-                    height: widget.searchbarFocus ? 0 : null,
+                    height: searchbarFocus ? 0 : null,
                     child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                "From: ",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                              MyDatePicker(onDateChanged: (newDateTime) {
+                                setState(() {
+                                  startDateTime = newDateTime;
+                                  data.fetchPlatesList(
+                                      startDateTime, endDateTime);
+                                  // print(newDateTime.toString());
+                                });
+                              }),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text(
+                                "To: ",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                              MyDatePicker(onDateChanged: (newDateTime) {
+                                setState(() {
+                                  endDateTime = newDateTime;
+                                  data.fetchPlatesList(
+                                      startDateTime, endDateTime);
+                                  // print(newDateTime.toString());
+                                });
+                              }),
+                            ],
+                          ),
+                        ],
+                      ),
                       MyPieChart(chartData: {
                         "Ins": data.totalIns.toDouble(),
                         "Outs": data.totalOuts.toDouble()
@@ -108,14 +155,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ]),
                   ),
-                  if (data.getFilteredPlates(widget.query).isNotEmpty)
+                  if (data.getFilteredPlates(query).isNotEmpty)
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const ClampingScrollPhysics(),
                       itemBuilder: (context, pos) => PlateCard(
-                        plate: data.getFilteredPlates(widget.query)[pos],
+                        plate: data.getFilteredPlates(query)[pos],
                       ),
-                      itemCount: data.getFilteredPlates(widget.query).length,
+                      itemCount: data.getFilteredPlates(query).length,
                     )
                   else
                     const Center(

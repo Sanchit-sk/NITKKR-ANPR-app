@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyDatePicker extends StatefulWidget {
   final Function(DateTime) onDateChanged;
-  const MyDatePicker({Key? key, required this.onDateChanged}) : super(key: key);
+  final DateTime? initDate;
+  const MyDatePicker({Key? key, required this.onDateChanged, this.initDate})
+      : super(key: key);
 
   @override
   State<MyDatePicker> createState() => _MyDatePickerState();
@@ -10,6 +12,13 @@ class MyDatePicker extends StatefulWidget {
 
 class _MyDatePickerState extends State<MyDatePicker> {
   DateTime date = DateTime.now();
+
+  @override
+  void initState() {
+    if (widget.initDate != null) {
+      date = widget.initDate!;
+    }
+  }
 
   String getText() {
     return "${date.day}/${date.month}/${date.year}";

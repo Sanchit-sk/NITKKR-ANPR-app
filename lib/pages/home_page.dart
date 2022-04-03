@@ -103,14 +103,17 @@ class _HomePageState extends State<HomePage> {
                                   fontSize: 15,
                                 ),
                               ),
-                              MyDatePicker(onDateChanged: (newDateTime) {
-                                setState(() {
-                                  startDateTime = newDateTime;
-                                  data.fetchPlatesList(
-                                      startDateTime, endDateTime);
-                                  // print(newDateTime.toString());
-                                });
-                              }),
+                              MyDatePicker(
+                                onDateChanged: (newDateTime) {
+                                  setState(() {
+                                    startDateTime = newDateTime;
+                                    data.fetchPlatesList(
+                                        startDateTime, endDateTime);
+                                    // print(newDateTime.toString());
+                                  });
+                                },
+                                initDate: startDateTime,
+                              ),
                             ],
                           ),
                           Row(
@@ -121,14 +124,17 @@ class _HomePageState extends State<HomePage> {
                                   fontSize: 15,
                                 ),
                               ),
-                              MyDatePicker(onDateChanged: (newDateTime) {
-                                setState(() {
-                                  endDateTime = newDateTime;
-                                  data.fetchPlatesList(
-                                      startDateTime, endDateTime);
-                                  // print(newDateTime.toString());
-                                });
-                              }),
+                              MyDatePicker(
+                                onDateChanged: (newDateTime) {
+                                  setState(() {
+                                    endDateTime = newDateTime;
+                                    data.fetchPlatesList(
+                                        startDateTime, endDateTime);
+                                    // print(newDateTime.toString());
+                                  });
+                                },
+                                initDate: endDateTime,
+                              ),
                             ],
                           ),
                         ],

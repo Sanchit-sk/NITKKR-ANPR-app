@@ -6,7 +6,7 @@ import 'package:nit_anpr_app/models/plate_info.dart';
 import 'package:nit_anpr_app/sample_data.dart';
 
 class PlatesDataProvider extends ChangeNotifier {
-  List<PlateInfo> _platesList = platesData;
+  List<PlateInfo> _platesList = [];
 
   List<PlateInfo> get plates => _platesList;
 
@@ -52,6 +52,12 @@ class PlatesDataProvider extends ChangeNotifier {
   Future<void> fetchPlatesList(DateTime? startDay, DateTime? endDay) async {
     List<PlateInfo> plates =
         await DataRepository().fetchPlates(startDay, endDay);
+
+    plates.forEach(
+      (element) {
+        print(element.toString());
+      },
+    );
     setPlatesList(plates);
   }
 

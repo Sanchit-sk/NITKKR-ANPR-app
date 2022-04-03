@@ -15,6 +15,36 @@ class DataRepository {
     return days;
   }
 
+  Future<List<PlateInfo>> getDayPlates(DateTime date) async {
+    List<PlateInfo> plates = [];
+    try {
+      QuerySnapshot<Map<String, dynamic>> plateDocs = await firestore
+          .collection("plates")
+          .doc(dateToString(date))
+          .collection("plates_data")
+          .get();
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in plateDocs.docs) {
+        // print(doc.id);
+        // // print(doc.data());
+        // String plateText = doc.id;
+        Map<String, dynamic> docData = doc.data();
+        plates.add(PlateInfo(
+            plateText: doc.id,
+            activity: docData["activity"],
+            location: docData["location"],
+            timeStamp: docData["time"]));
+
+        print(docData);
+        print(plates.length);
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return plates;
+  }
+
   String dateToString(DateTime dateTime) {
     return DateFormat("yyyy-MM-dd").format(dateTime);
   }
@@ -29,31 +59,14 @@ class DataRepository {
     });
 
     List<PlateInfo> plates = [];
-    days.forEach((day) async {
-      try {
-        QuerySnapshot<Map<String, dynamic>> plateDocs = await firestore
-            .collection("plates")
-            .doc(dateToString(day))
-            .collection("plates_data")
-            .get();
+    for (var day in days) {
+      List<PlateInfo> dayPlates = await getDayPlates(day);
+      plates.addAll(dayPlates);
+    }
 
-        for (QueryDocumentSnapshot<Map<String, dynamic>> doc
-            in plateDocs.docs) {
-          // print(doc.id);
-          // // print(doc.data());
-          // String plateText = doc.id;
-          Map<String, dynamic> docData = doc.data();
-          plates.add(PlateInfo(
-              plateText: doc.id,
-              activity: docData["activity"],
-              location: docData["location"],
-              timeStamp: docData["time"]));
-        }
-      } catch (e) {
-        print(e);
-      }
-    });
-
-    return plates;
+    // print(plates.length);
+    print("Fetched plates list length : ${plates.length}");
+    plates.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
+    return plates.reversed.toList();
   }
 }

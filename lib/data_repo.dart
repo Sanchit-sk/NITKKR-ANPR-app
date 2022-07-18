@@ -30,10 +30,12 @@ class DataRepository {
         // String plateText = doc.id;
         Map<String, dynamic> docData = doc.data();
         plates.add(PlateInfo(
-            plateText: doc.id,
+            plateText: docData["plate"],
             activity: docData["activity"],
             location: docData["location"],
-            timeStamp: docData["time"]));
+            timeStamp: dateToString(date) +
+                " " +
+                docData["time"].toString().substring(0, 5)));
 
         print(docData);
         print(plates.length);

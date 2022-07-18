@@ -10,7 +10,7 @@ class PlatesDataProvider extends ChangeNotifier {
 
   List<PlateInfo> get plates => _platesList;
 
-  Map<String, LocationInfo> get locationData {
+  Map<String, LocationInfo> getLocationData(List<PlateInfo> plates) {
     Map<String, LocationInfo> locData = {};
     plates.forEach((element) {
       String loc = element.location;
@@ -23,7 +23,7 @@ class PlatesDataProvider extends ChangeNotifier {
     return locData;
   }
 
-  int get totalIns {
+  int getTotalIns(List<PlateInfo> plates) {
     int countIns = 0;
     plates.forEach((element) {
       if (element.activity == AppConstants.ACTIVITY_IN) countIns += 1;
@@ -32,7 +32,7 @@ class PlatesDataProvider extends ChangeNotifier {
     return countIns;
   }
 
-  int get totalOuts {
+  int getTotalOuts(List<PlateInfo> plates) {
     int countOuts = 0;
     plates.forEach((element) {
       if (element.activity == AppConstants.ACTIVITY_OUT) countOuts += 1;
@@ -46,10 +46,11 @@ class PlatesDataProvider extends ChangeNotifier {
   //Must fetch the new list everytime the time frame is changed by the user
   void setPlatesList(List<PlateInfo> newPlates) {
     _platesList = newPlates;
-    notifyListeners();
+    // notifyListeners();
   }
 
-  Future<void> fetchPlatesList(DateTime? startDay, DateTime? endDay) async {
+  Future<List<PlateInfo>> fetchPlatesList(
+      DateTime? startDay, DateTime? endDay) async {
     List<PlateInfo> plates =
         await DataRepository().fetchPlates(startDay, endDay);
 
@@ -59,6 +60,7 @@ class PlatesDataProvider extends ChangeNotifier {
       },
     );
     setPlatesList(plates);
+    return plates;
   }
 
   List<PlateInfo> getFilteredPlates(String query) {

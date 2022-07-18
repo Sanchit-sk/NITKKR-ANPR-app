@@ -6,8 +6,10 @@ class MySearchBar extends StatelessWidget {
   Function(String val) onSearch;
   Function()? onFocus;
   Function()? onFocusOut;
+  String initText;
   MySearchBar({
     Key? key,
+    required this.initText,
     this.hint = "",
     this.suffixIcon,
     required this.onSearch,
@@ -17,7 +19,8 @@ class MySearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      initialValue: initText,
       onTap: onFocus,
       onEditingComplete: onFocusOut,
       decoration: InputDecoration(

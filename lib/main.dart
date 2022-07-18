@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nit_anpr_app/data_repo.dart';
+import 'package:nit_anpr_app/firebase_auth.dart';
 import 'package:nit_anpr_app/pages/home_page.dart';
+import 'package:nit_anpr_app/pages/login_page.dart';
 import 'package:nit_anpr_app/providers/plates_data_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: FireAuth.getUser() == null ? LoginPage() : HomePage(),
     );
   }
 }
